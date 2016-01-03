@@ -1,15 +1,11 @@
+var config = require('./config.js');
 var cheerio = require('cheerio');
 var TwitterBot = require('node-twitterbot').TwitterBot;
 var moment = require('moment');
 var request = require('request');
 var _ = require('underscore');
 
-var Bot = new TwitterBot({
-    "consumer_secret": "",
-    "consumer_key": "",
-    "access_token": "",
-    "access_token_secret": ""
-});
+var Bot = new TwitterBot(config.twitter);
 
 var currentMonth = moment().format('MMMM');
 var currentDay = moment().format('dddd, MMMM D, YYYY');
@@ -75,13 +71,12 @@ process.stdin.on('data', function (chunk) {
   process.exit();
 });
 
-// Warn the user we are entering an infinite loop
 console.log("Starting SCOTUS Scheduler loop. Press Enter to stop.");
 
 var date = new Date();
 
-// //  (2 minutes = 120 seconds = 120000 milliseconds)
-// setInterval(function() {
-//   Bot.now('tweetMonthlySchedule');
-//   console.log("Log: Sent a tweet -- " + date.toISOString(Date.now() ) );
-// }, 120000);
+//  (2 minutes = 120 seconds = 120000 milliseconds)
+setInterval(function() {
+  Bot.now('tweetMonthlySchedule');
+  console.log("Log: Sent a tweet -- " + date.toISOString(Date.now() ) );
+}, 120000);
